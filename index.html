@@ -375,7 +375,7 @@
     display: grid;
     grid-template-columns: minmax(280px, 0.9fr) minmax(360px, 1.25fr);
     gap: 16px;
-    padding-bottom: 56px;
+    padding-bottom: 28px;
   }
 
   .service-card {
@@ -514,6 +514,54 @@
     background: var(--green);
   }
 
+  .featured-explorers {
+    margin-bottom: 56px;
+    padding: 22px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.74);
+    box-shadow: 0 10px 28px rgba(21,32,51,0.06);
+  }
+
+  .featured-explorers .section-head {
+    margin: 0 0 16px;
+  }
+
+  .explorer-strip {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .explorer-link {
+    display: grid;
+    gap: 6px;
+    min-height: 82px;
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fff;
+    text-decoration: none;
+    transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+  }
+
+  .explorer-link:hover {
+    transform: translateY(-1px);
+    border-color: var(--line-strong);
+    box-shadow: 0 12px 26px rgba(21,32,51,0.08);
+  }
+
+  .explorer-link strong {
+    font-size: 14px;
+    line-height: 1.2;
+  }
+
+  .explorer-link span {
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 620;
+  }
+
   .footer {
     border-top: 1px solid var(--line);
     padding: 22px 0 28px;
@@ -539,6 +587,7 @@
     .node-panel { max-width: 560px; }
     .services { grid-template-columns: 1fr; }
     .service-card { min-height: 0; }
+    .explorer-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
 
   @media (max-width: 700px) {
@@ -561,6 +610,7 @@
     .terminal-row { grid-template-columns: 80px minmax(0, 1fr) 46px; font-size: 11px; }
     .service-actions.split { grid-template-columns: 1fr; }
     .section-head { align-items: flex-start; flex-direction: column; gap: 8px; }
+    .explorer-strip { grid-template-columns: 1fr; }
     .footer .shell { align-items: flex-start; flex-direction: column; }
   }
 </style>
@@ -584,6 +634,7 @@
       <span class="status-pill"><span class="status-dot"></span>在线</span>
       <a href="https://faucet.xyz365.tech/" target="_blank" rel="noopener">Faucet</a>
       <a href="https://scan.xyz365.tech/" target="_blank" rel="noopener">RPC / Explorer</a>
+      <a href="/explorers.html">Explorers</a>
     </nav>
   </header>
 
@@ -705,6 +756,40 @@
             <a class="button primary" href="https://scan.xyz365.tech/" target="_blank" rel="noopener">打开浏览器</a>
           </div>
         </article>
+      </div>
+    </section>
+
+    <section class="featured-explorers" aria-labelledby="explorers-title">
+      <div class="section-head">
+        <h2 id="explorers-title">常用区块浏览器</h2>
+        <p>开发时常查的公网浏览器放在这里，完整目录按链分类收在二级页面。</p>
+      </div>
+
+      <div class="explorer-strip">
+        <a class="explorer-link" href="https://etherscan.io/" target="_blank" rel="noopener">
+          <strong>Etherscan</strong>
+          <span>Ethereum</span>
+        </a>
+        <a class="explorer-link" href="https://basescan.org/" target="_blank" rel="noopener">
+          <strong>BaseScan</strong>
+          <span>Base</span>
+        </a>
+        <a class="explorer-link" href="https://arbiscan.io/" target="_blank" rel="noopener">
+          <strong>Arbiscan</strong>
+          <span>Arbitrum</span>
+        </a>
+        <a class="explorer-link" href="https://bscscan.com/" target="_blank" rel="noopener">
+          <strong>BscScan</strong>
+          <span>BNB Chain</span>
+        </a>
+        <a class="explorer-link" href="https://mempool.space/zh/" target="_blank" rel="noopener">
+          <strong>mempool.space</strong>
+          <span>Bitcoin</span>
+        </a>
+        <a class="explorer-link" href="/explorers.html">
+          <strong>查看全部</strong>
+          <span>按链分类</span>
+        </a>
       </div>
     </section>
   </main>
