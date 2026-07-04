@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>XYZ365 · Sepolia 节点服务</title>
+<title>XYZ365 · 区块链资源导航</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml">
 <style>
@@ -128,10 +128,16 @@
 
   .hero {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 430px;
-    gap: 42px;
+    grid-template-columns: 1fr;
+    gap: 30px;
     align-items: center;
-    padding: 58px 0 42px;
+    padding: 58px 0 38px;
+    text-align: center;
+  }
+
+  .hero > div {
+    max-width: 800px;
+    margin: 0 auto;
   }
 
   .kicker {
@@ -151,7 +157,7 @@
   .kicker svg { width: 16px; height: 16px; }
 
   h1 {
-    max-width: 680px;
+    max-width: 780px;
     margin: 20px 0 16px;
     font-size: clamp(38px, 5vw, 64px);
     line-height: 1.03;
@@ -160,8 +166,8 @@
   }
 
   .lead {
-    max-width: 640px;
-    margin: 0;
+    max-width: 720px;
+    margin: 0 auto;
     color: var(--muted);
     font-size: 18px;
   }
@@ -169,6 +175,7 @@
   .hero-actions {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 12px;
     margin-top: 28px;
   }
@@ -209,146 +216,11 @@
     box-shadow: 0 14px 32px rgba(21,32,51,0.14);
   }
 
-  .metrics {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
-    margin-top: 34px;
-    max-width: 640px;
+  .button.done {
+    color: #fff;
+    background: var(--green);
+    border-color: transparent;
   }
-
-  .metric {
-    min-height: 78px;
-    padding: 14px;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: rgba(255,255,255,0.68);
-  }
-
-  .metric strong {
-    display: block;
-    font-size: 20px;
-    line-height: 1.1;
-    color: var(--ink);
-  }
-
-  .metric span {
-    display: block;
-    margin-top: 7px;
-    color: var(--muted);
-    font-size: 12px;
-    font-weight: 620;
-  }
-
-  .node-panel {
-    position: relative;
-    border: 1px solid var(--line-strong);
-    border-radius: 8px;
-    background: var(--surface);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-  }
-
-  .panel-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 48px;
-    padding: 0 16px;
-    border-bottom: 1px solid var(--line);
-    background: #f9fbfe;
-  }
-
-  .panel-title {
-    display: inline-flex;
-    align-items: center;
-    gap: 9px;
-    font-size: 13px;
-    font-weight: 760;
-  }
-
-  .panel-title svg { width: 17px; height: 17px; color: var(--blue); }
-
-  .panel-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    height: 26px;
-    padding: 0 9px;
-    border-radius: 7px;
-    color: #0c6b4a;
-    background: rgba(17,151,101,0.1);
-    font-size: 12px;
-    font-weight: 720;
-  }
-
-  .panel-body { padding: 18px; }
-
-  .network-map {
-    position: relative;
-    height: 194px;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background:
-      linear-gradient(135deg, rgba(33,103,243,0.06), rgba(12,157,176,0.05)),
-      repeating-linear-gradient(90deg, rgba(23,32,51,0.05) 0 1px, transparent 1px 36px),
-      repeating-linear-gradient(0deg, rgba(23,32,51,0.045) 0 1px, transparent 1px 36px),
-      #fbfdff;
-    overflow: hidden;
-  }
-
-  .network-line {
-    position: absolute;
-    height: 2px;
-    background: linear-gradient(90deg, rgba(33,103,243,0.18), rgba(12,157,176,0.62), rgba(17,151,101,0.18));
-    transform-origin: left center;
-  }
-
-  .line-a { left: 70px; top: 72px; width: 250px; transform: rotate(10deg); }
-  .line-b { left: 86px; top: 132px; width: 210px; transform: rotate(-18deg); }
-  .line-c { left: 168px; top: 42px; width: 116px; transform: rotate(58deg); }
-
-  .node {
-    position: absolute;
-    display: grid;
-    place-items: center;
-    width: 54px;
-    height: 54px;
-    border-radius: 8px;
-    border: 1px solid var(--line-strong);
-    background: rgba(255,255,255,0.92);
-    box-shadow: 0 10px 28px rgba(21,32,51,0.12);
-  }
-
-  .node svg { width: 24px; height: 24px; }
-  .node.rpc { left: 40px; top: 48px; color: var(--blue); }
-  .node.scan { right: 42px; top: 66px; color: var(--green); }
-  .node.faucet { left: 150px; bottom: 26px; color: var(--amber); }
-
-  .terminal {
-    margin-top: 14px;
-    border-radius: 8px;
-    background: #111827;
-    color: #d8dee9;
-    overflow: hidden;
-  }
-
-  .terminal-row {
-    display: grid;
-    grid-template-columns: 94px minmax(0, 1fr) 58px;
-    gap: 10px;
-    align-items: center;
-    min-height: 38px;
-    padding: 0 12px;
-    border-top: 1px solid rgba(255,255,255,0.08);
-    font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
-    font-size: 12px;
-  }
-
-  .terminal-row:first-child { border-top: 0; }
-  .terminal-key { color: #8fb4ff; }
-  .terminal-value { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .terminal-ok { color: #72dfa8; text-align: right; }
 
   .section-head {
     display: flex;
@@ -373,7 +245,7 @@
 
   .services {
     display: grid;
-    grid-template-columns: minmax(280px, 0.9fr) minmax(360px, 1.25fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 16px;
     padding-bottom: 28px;
   }
@@ -514,7 +386,11 @@
     background: var(--green);
   }
 
-  .featured-explorers {
+  .resource-lane {
+    display: grid;
+    grid-template-columns: 280px repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    align-items: stretch;
     margin-bottom: 56px;
     padding: 22px;
     border: 1px solid var(--line);
@@ -523,43 +399,45 @@
     box-shadow: 0 10px 28px rgba(21,32,51,0.06);
   }
 
-  .featured-explorers .section-head {
-    margin: 0 0 16px;
-  }
-
-  .explorer-strip {
-    display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 10px;
-  }
-
-  .explorer-link {
-    display: grid;
-    gap: 6px;
-    min-height: 82px;
-    padding: 14px;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: #fff;
-    text-decoration: none;
-    transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
-  }
-
-  .explorer-link:hover {
-    transform: translateY(-1px);
-    border-color: var(--line-strong);
-    box-shadow: 0 12px 26px rgba(21,32,51,0.08);
-  }
-
-  .explorer-link strong {
-    font-size: 14px;
+  .resource-intro h2 {
+    margin: 0 0 8px;
+    font-size: 24px;
     line-height: 1.2;
   }
 
-  .explorer-link span {
+  .resource-intro p {
+    margin: 0;
     color: var(--muted);
-    font-size: 12px;
-    font-weight: 620;
+    font-size: 14px;
+  }
+
+  .resource-item {
+    display: flex;
+    gap: 12px;
+    min-height: 98px;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fff;
+  }
+
+  .resource-item .service-icon {
+    flex: 0 0 auto;
+    width: 38px;
+    height: 38px;
+  }
+
+  .resource-item strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 15px;
+    line-height: 1.2;
+  }
+
+  .resource-item span {
+    display: block;
+    color: var(--muted);
+    font-size: 13px;
   }
 
   .footer {
@@ -584,10 +462,10 @@
 
   @media (max-width: 960px) {
     .hero { grid-template-columns: 1fr; gap: 26px; padding-top: 42px; }
-    .node-panel { max-width: 560px; }
     .services { grid-template-columns: 1fr; }
     .service-card { min-height: 0; }
-    .explorer-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .resource-lane { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .resource-intro { grid-column: 1 / -1; }
   }
 
   @media (max-width: 700px) {
@@ -599,18 +477,10 @@
     .lead { font-size: 16px; }
     .hero-actions { display: grid; grid-template-columns: 1fr; }
     .button { width: 100%; }
-    .metrics { grid-template-columns: 1fr; }
-    .network-map { height: 168px; }
-    .node.rpc { left: 26px; top: 42px; }
-    .node.scan { right: 24px; top: 56px; }
-    .node.faucet { left: 122px; bottom: 20px; }
-    .line-a { left: 56px; top: 68px; width: 200px; }
-    .line-b { left: 70px; top: 120px; width: 166px; }
-    .line-c { left: 148px; top: 38px; width: 92px; }
-    .terminal-row { grid-template-columns: 80px minmax(0, 1fr) 46px; font-size: 11px; }
     .service-actions.split { grid-template-columns: 1fr; }
     .section-head { align-items: flex-start; flex-direction: column; gap: 8px; }
-    .explorer-strip { grid-template-columns: 1fr; }
+    .resource-lane { grid-template-columns: 1fr; }
+    .resource-intro { grid-column: auto; }
     .footer .shell { align-items: flex-start; flex-direction: column; }
   }
 </style>
@@ -627,13 +497,13 @@
       </span>
       <span>
         <span class="brand-name">XYZ365</span>
-        <span class="brand-subtitle">Sepolia 节点服务</span>
+        <span class="brand-subtitle">区块链资源导航</span>
       </span>
     </a>
     <nav class="nav" aria-label="服务导航">
       <span class="status-pill"><span class="status-dot"></span>在线</span>
       <a href="https://faucet.xyz365.tech/" target="_blank" rel="noopener">Faucet</a>
-      <a href="https://scan.xyz365.tech/" target="_blank" rel="noopener">RPC / Explorer</a>
+      <a href="https://anvil.xyz365.tech/" target="_blank" rel="noopener">Anvil RPC</a>
       <a href="/explorers.html">Explorers</a>
     </nav>
   </header>
@@ -646,69 +516,37 @@
             <path d="M4 12a8 8 0 1 0 16 0A8 8 0 0 0 4 12Z"/>
             <path d="M12 8v4l3 2"/>
           </svg>
-          Sepolia Testnet
+          Resource Hub
         </span>
-        <h1>多链测试网开发工具集</h1>
-        <p class="lead">本页汇总两类开发服务：<strong>Anvil Sepolia 私有节点（RPC + 区块浏览器）</strong>和<strong>多链测试网综合水龙头</strong>（EVM + Tron 等）。两者相互独立，可按开发场景分别使用。</p>
+        <h1>多链测试网与区块链资源导航</h1>
+        <p class="lead">提供本站测试资产领取、Anvil RPC 调试环境，以及常用区块浏览器与第三方测试网入口。</p>
         <div class="hero-actions">
-          <a class="button primary" href="https://scan.xyz365.tech/" target="_blank" rel="noopener">
-            打开区块浏览器
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M7 17 17 7"/><path d="M7 7h10v10"/>
-            </svg>
-          </a>
-          <a class="button secondary" href="https://faucet.xyz365.tech/" target="_blank" rel="noopener">
-            领取测试币
+          <a class="button primary" href="https://faucet.xyz365.tech/" target="_blank" rel="noopener">
+            打开水龙头
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M12 2.5S6 9 6 14a6 6 0 0 0 12 0c0-5-6-11.5-6-11.5Z"/>
             </svg>
           </a>
-        </div>
-        <div class="metrics" aria-label="服务概览">
-          <div class="metric"><strong>2</strong><span>核心服务模块</span></div>
-          <div class="metric"><strong>11155111</strong><span>Sepolia Chain ID</span></div>
-          <div class="metric"><strong>HTTPS</strong><span>证书与反代已配置</span></div>
+          <button class="button secondary" type="button" onclick="copyHeroRpc(this)">
+            复制 RPC
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+          </button>
+          <a class="button secondary" href="/explorers.html">
+            浏览器目录
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 17 17 7"/><path d="M7 7h10v10"/>
+            </svg>
+          </a>
         </div>
       </div>
-
-      <aside class="node-panel" aria-label="节点状态面板">
-        <div class="panel-head">
-          <div class="panel-title">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M6 18h12"/><path d="M8 18V7a4 4 0 0 1 8 0v11"/><path d="M10 10h4"/>
-            </svg>
-            service topology
-          </div>
-          <span class="panel-chip"><span class="status-dot"></span>healthy</span>
-        </div>
-        <div class="panel-body">
-          <div class="network-map" aria-hidden="true">
-            <span class="network-line line-a"></span>
-            <span class="network-line line-b"></span>
-            <span class="network-line line-c"></span>
-            <span class="node rpc">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 10-12h-7l1-8Z"/></svg>
-            </span>
-            <span class="node scan">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-            </span>
-            <span class="node faucet">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5S6 9 6 14a6 6 0 0 0 12 0c0-5-6-11.5-6-11.5Z"/></svg>
-            </span>
-          </div>
-          <div class="terminal" aria-label="端点状态">
-            <div class="terminal-row"><span class="terminal-key">rpc</span><span class="terminal-value">anvil.xyz365.tech</span><span class="terminal-ok">200</span></div>
-            <div class="terminal-row"><span class="terminal-key">scan</span><span class="terminal-value">scan.xyz365.tech</span><span class="terminal-ok">200</span></div>
-            <div class="terminal-row"><span class="terminal-key">faucet</span><span class="terminal-value">faucet.xyz365.tech</span><span class="terminal-ok">200</span></div>
-          </div>
-        </div>
-      </aside>
     </section>
 
     <section aria-labelledby="services-title">
       <div class="section-head">
-        <h2 id="services-title">服务入口</h2>
-        <p>常用开发流程放在首屏下方，领取测试币、复制 RPC、打开浏览器都可以直接完成。</p>
+        <h2 id="services-title">主功能入口</h2>
+        <p>首页只保留三个高频入口，具体链上查询与本站 Anvil Scan 收录到浏览器目录。</p>
       </div>
 
       <div class="services">
@@ -717,14 +555,14 @@
             <span class="service-icon" style="color: var(--amber);" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5S6 9 6 14a6 6 0 0 0 12 0c0-5-6-11.5-6-11.5Z"/><path d="M12 20a3 3 0 0 1-3-3"/></svg>
             </span>
-            <span class="badge">多链</span>
+            <span class="badge">资产领取</span>
           </div>
-          <h3>测试网综合水龙头</h3>
-          <p>可领取多条测试链资产：Sepolia：USDT、USDC；Tron Shasta：USDT，并提供第三方水龙头快捷入口。<strong>此服务独立运行，与 Anvil 私有节点互不依赖。</strong></p>
+          <h3>测试网水龙头</h3>
+          <p>领取本站发放的测试资产，并快速跳转到 Sepolia、Tron Shasta、Bitcoin 等第三方测试网水龙头。</p>
           <ul class="service-list">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>Sepolia：USDT、USDC</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>Tron Shasta：USDT</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>第三方水龙头快速入口</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>本站发放：USDT、USDC 等</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>第三方入口：ETH、TRX、BTC 等测试币</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>适合开发、联调与测试使用</li>
           </ul>
           <div class="service-actions">
             <a class="button secondary" href="https://faucet.xyz365.tech/" target="_blank" rel="noopener">打开水龙头</a>
@@ -736,14 +574,14 @@
             <span class="service-icon" style="color: var(--blue);" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 10-12h-7l1-8Z"/></svg>
             </span>
-            <span class="badge">RPC + Otterscan</span>
+            <span class="badge">RPC</span>
           </div>
-          <h3>Anvil RPC Node + Block Explorer</h3>
-          <p>私有 Sepolia fork 节点，提供独立的 JSON-RPC 接口和配套区块浏览器。本地开发、合约调试专用环境，与公网 Sepolia 隔离。</p>
+          <h3>Anvil RPC</h3>
+          <p>高性能 Sepolia Fork RPC，适用于合约开发、交易调试与本地集成测试。</p>
           <ul class="service-list">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>公共 JSON-RPC：anvil.xyz365.tech</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>浏览器入口：scan.xyz365.tech</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>Otterscan 内部 RPC 指向 /rpc</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>公共 JSON-RPC Endpoint</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>支持 Anvil 环境 ETH 与测试 USDT</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>兼容 EVM JSON-RPC</li>
           </ul>
           <div class="service-actions split">
             <div class="endpoint">
@@ -753,43 +591,58 @@
               </button>
             </div>
             <a class="button secondary" href="https://anvil.xyz365.tech/" target="_blank" rel="noopener">查看节点响应</a>
-            <a class="button primary" href="https://scan.xyz365.tech/" target="_blank" rel="noopener">打开浏览器</a>
+          </div>
+        </article>
+
+        <article class="service-card">
+          <div class="service-top">
+            <span class="service-icon" style="color: var(--cyan);" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 0 20"/><path d="M12 2a15.3 15.3 0 0 0 0 20"/></svg>
+            </span>
+            <span class="badge">目录</span>
+          </div>
+          <h3>区块链浏览器</h3>
+          <p>汇总常用第三方区块浏览器，并收录本站 Anvil Scan 作为配套查询入口。</p>
+          <ul class="service-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>第三方公网浏览器集合</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>覆盖 EVM、Bitcoin、Solana、Tron</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>包含本站 Anvil Scan</li>
+          </ul>
+          <div class="service-actions">
+            <a class="button primary" href="/explorers.html">打开目录</a>
           </div>
         </article>
       </div>
     </section>
 
-    <section class="featured-explorers" aria-labelledby="explorers-title">
-      <div class="section-head">
-        <h2 id="explorers-title">常用区块浏览器</h2>
-        <p>开发时常查的公网浏览器放在这里，完整目录按链分类收在二级页面。</p>
+    <section class="resource-lane" aria-labelledby="future-title">
+      <div class="resource-intro">
+        <h2 id="future-title">后续资源位</h2>
+        <p>更多区块链开发与测试资源，持续补充中。</p>
       </div>
-
-      <div class="explorer-strip">
-        <a class="explorer-link" href="https://etherscan.io/" target="_blank" rel="noopener">
-          <strong>Etherscan</strong>
-          <span>Ethereum</span>
-        </a>
-        <a class="explorer-link" href="https://basescan.org/" target="_blank" rel="noopener">
-          <strong>BaseScan</strong>
-          <span>Base</span>
-        </a>
-        <a class="explorer-link" href="https://arbiscan.io/" target="_blank" rel="noopener">
-          <strong>Arbiscan</strong>
-          <span>Arbitrum</span>
-        </a>
-        <a class="explorer-link" href="https://bscscan.com/" target="_blank" rel="noopener">
-          <strong>BscScan</strong>
-          <span>BNB Chain</span>
-        </a>
-        <a class="explorer-link" href="https://mempool.space/zh/" target="_blank" rel="noopener">
-          <strong>mempool.space</strong>
-          <span>Bitcoin</span>
-        </a>
-        <a class="explorer-link" href="/explorers.html">
-          <strong>查看全部</strong>
-          <span>按链分类</span>
-        </a>
+      <div class="resource-item">
+        <span class="service-icon" style="color: var(--blue);" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></svg>
+        </span>
+        <div><strong>开发工具</strong><span>常用开发工具与环境</span></div>
+      </div>
+      <div class="resource-item">
+        <span class="service-icon" style="color: var(--green);" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5V4a2 2 0 0 1 2-2h11l3 3v14.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M8 10h8"/><path d="M8 14h8"/></svg>
+        </span>
+        <div><strong>测试网文档</strong><span>各链测试网文档与指南</span></div>
+      </div>
+      <div class="resource-item">
+        <span class="service-icon" style="color: var(--cyan);" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8"/><path d="M8 12h3"/><path d="M13 12h3"/><path d="M8 16h3"/><path d="M13 16h3"/></svg>
+        </span>
+        <div><strong>合约工具</strong><span>合约验证、格式化与调试工具</span></div>
+      </div>
+      <div class="resource-item">
+        <span class="service-icon" style="color: var(--amber);" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10"/><path d="M10 20V4"/><path d="M16 20v-7"/><path d="M22 20V7"/><path d="M2 20h22"/></svg>
+        </span>
+        <div><strong>链上数据</strong><span>链上数据查询与分析入口</span></div>
       </div>
     </section>
   </main>
@@ -807,6 +660,31 @@
     const original = btn.innerHTML;
     const doneIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m20 6-11 11-5-5"/></svg>';
     const done = () => { btn.innerHTML = doneIcon; btn.classList.add('done'); };
+    const reset = () => { setTimeout(() => { btn.innerHTML = original; btn.classList.remove('done'); }, 1400); };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(done).catch(fallback).finally(reset);
+    } else {
+      fallback();
+      reset();
+    }
+
+    function fallback() {
+      const ta = document.createElement('textarea');
+      ta.value = url;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); done(); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+  }
+
+  function copyHeroRpc(btn) {
+    const url = 'https://anvil.xyz365.tech';
+    const original = btn.innerHTML;
+    const done = () => { btn.textContent = '已复制'; btn.classList.add('done'); };
     const reset = () => { setTimeout(() => { btn.innerHTML = original; btn.classList.remove('done'); }, 1400); };
 
     if (navigator.clipboard && navigator.clipboard.writeText) {
