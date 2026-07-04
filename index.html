@@ -1,0 +1,747 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XYZ365 · Sepolia 节点服务</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml">
+<style>
+  :root {
+    --bg: #f4f7fb;
+    --surface: #ffffff;
+    --surface-2: #eef3f8;
+    --ink: #172033;
+    --muted: #647086;
+    --line: #d9e1eb;
+    --line-strong: #c4cfdd;
+    --blue: #2167f3;
+    --cyan: #0c9db0;
+    --green: #119765;
+    --amber: #bc7111;
+    --red: #cf3d3d;
+    --dark: #101827;
+    --shadow: 0 18px 48px rgba(21, 32, 51, 0.12);
+  }
+
+  * { box-sizing: border-box; }
+
+  html { min-height: 100%; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                 "Hiragino Sans GB", "Microsoft YaHei", Roboto, Arial, sans-serif;
+    color: var(--ink);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.82) 0%, rgba(244,247,251,0.92) 42%, #eef3f8 100%),
+      repeating-linear-gradient(90deg, rgba(23,32,51,0.045) 0 1px, transparent 1px 80px),
+      repeating-linear-gradient(0deg, rgba(23,32,51,0.04) 0 1px, transparent 1px 80px);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; }
+
+  .shell {
+    width: min(1180px, calc(100% - 40px));
+    margin: 0 auto;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 72px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .mark {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    background: linear-gradient(135deg, #172033, #2167f3 68%, #0c9db0);
+    box-shadow: 0 10px 24px rgba(33, 103, 243, 0.22);
+  }
+
+  .brand-name {
+    display: block;
+    font-size: 16px;
+    font-weight: 760;
+    letter-spacing: 0;
+  }
+
+  .brand-subtitle {
+    display: block;
+    margin-top: 1px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 560;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nav a,
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 34px;
+    padding: 0 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.74);
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 640;
+    text-decoration: none;
+  }
+
+  .nav a:hover {
+    color: var(--ink);
+    border-color: var(--line-strong);
+    background: #fff;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 0 4px rgba(17,151,101,0.13);
+  }
+
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 430px;
+    gap: 42px;
+    align-items: center;
+    padding: 58px 0 42px;
+  }
+
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 32px;
+    padding: 0 12px;
+    border: 1px solid rgba(12,157,176,0.28);
+    border-radius: 8px;
+    background: rgba(12,157,176,0.08);
+    color: #0b7f90;
+    font-size: 13px;
+    font-weight: 720;
+  }
+
+  .kicker svg { width: 16px; height: 16px; }
+
+  h1 {
+    max-width: 680px;
+    margin: 20px 0 16px;
+    font-size: clamp(38px, 5vw, 64px);
+    line-height: 1.03;
+    letter-spacing: 0;
+    font-weight: 820;
+  }
+
+  .lead {
+    max-width: 640px;
+    margin: 0;
+    color: var(--muted);
+    font-size: 18px;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 44px;
+    padding: 0 16px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 14px;
+    font-weight: 720;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+  }
+
+  .button svg { width: 18px; height: 18px; }
+
+  .button.primary {
+    color: #fff;
+    background: var(--dark);
+    box-shadow: 0 12px 28px rgba(16,24,39,0.18);
+  }
+
+  .button.secondary {
+    color: var(--ink);
+    background: #fff;
+    border-color: var(--line-strong);
+  }
+
+  .button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 32px rgba(21,32,51,0.14);
+  }
+
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 34px;
+    max-width: 640px;
+  }
+
+  .metric {
+    min-height: 78px;
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.68);
+  }
+
+  .metric strong {
+    display: block;
+    font-size: 20px;
+    line-height: 1.1;
+    color: var(--ink);
+  }
+
+  .metric span {
+    display: block;
+    margin-top: 7px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 620;
+  }
+
+  .node-panel {
+    position: relative;
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+    padding: 0 16px;
+    border-bottom: 1px solid var(--line);
+    background: #f9fbfe;
+  }
+
+  .panel-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 13px;
+    font-weight: 760;
+  }
+
+  .panel-title svg { width: 17px; height: 17px; color: var(--blue); }
+
+  .panel-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    height: 26px;
+    padding: 0 9px;
+    border-radius: 7px;
+    color: #0c6b4a;
+    background: rgba(17,151,101,0.1);
+    font-size: 12px;
+    font-weight: 720;
+  }
+
+  .panel-body { padding: 18px; }
+
+  .network-map {
+    position: relative;
+    height: 194px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background:
+      linear-gradient(135deg, rgba(33,103,243,0.06), rgba(12,157,176,0.05)),
+      repeating-linear-gradient(90deg, rgba(23,32,51,0.05) 0 1px, transparent 1px 36px),
+      repeating-linear-gradient(0deg, rgba(23,32,51,0.045) 0 1px, transparent 1px 36px),
+      #fbfdff;
+    overflow: hidden;
+  }
+
+  .network-line {
+    position: absolute;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(33,103,243,0.18), rgba(12,157,176,0.62), rgba(17,151,101,0.18));
+    transform-origin: left center;
+  }
+
+  .line-a { left: 70px; top: 72px; width: 250px; transform: rotate(10deg); }
+  .line-b { left: 86px; top: 132px; width: 210px; transform: rotate(-18deg); }
+  .line-c { left: 168px; top: 42px; width: 116px; transform: rotate(58deg); }
+
+  .node {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 8px;
+    border: 1px solid var(--line-strong);
+    background: rgba(255,255,255,0.92);
+    box-shadow: 0 10px 28px rgba(21,32,51,0.12);
+  }
+
+  .node svg { width: 24px; height: 24px; }
+  .node.rpc { left: 40px; top: 48px; color: var(--blue); }
+  .node.scan { right: 42px; top: 66px; color: var(--green); }
+  .node.faucet { left: 150px; bottom: 26px; color: var(--amber); }
+
+  .terminal {
+    margin-top: 14px;
+    border-radius: 8px;
+    background: #111827;
+    color: #d8dee9;
+    overflow: hidden;
+  }
+
+  .terminal-row {
+    display: grid;
+    grid-template-columns: 94px minmax(0, 1fr) 58px;
+    gap: 10px;
+    align-items: center;
+    min-height: 38px;
+    padding: 0 12px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+    font-size: 12px;
+  }
+
+  .terminal-row:first-child { border-top: 0; }
+  .terminal-key { color: #8fb4ff; }
+  .terminal-value { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .terminal-ok { color: #72dfa8; text-align: right; }
+
+  .section-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 20px;
+    margin: 22px 0 16px;
+  }
+
+  .section-head h2 {
+    margin: 0;
+    font-size: 24px;
+    line-height: 1.2;
+  }
+
+  .section-head p {
+    max-width: 520px;
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .services {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.9fr) minmax(360px, 1.25fr);
+    gap: 16px;
+    padding-bottom: 56px;
+  }
+
+  .service-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 302px;
+    padding: 22px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.86);
+    box-shadow: 0 10px 28px rgba(21,32,51,0.07);
+  }
+
+  .service-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .service-icon {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: #f8fafc;
+  }
+
+  .service-icon svg { width: 22px; height: 22px; }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    height: 26px;
+    padding: 0 8px;
+    border-radius: 7px;
+    color: var(--muted);
+    background: var(--surface-2);
+    font-size: 12px;
+    font-weight: 720;
+  }
+
+  .service-card h3 {
+    margin: 20px 0 8px;
+    font-size: 19px;
+    line-height: 1.2;
+  }
+
+  .service-card p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .service-list {
+    display: grid;
+    gap: 9px;
+    margin: 18px 0 22px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .service-list li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #344054;
+    font-size: 13px;
+  }
+
+  .service-list svg {
+    flex: 0 0 auto;
+    width: 15px;
+    height: 15px;
+    color: var(--green);
+  }
+
+  .service-actions {
+    display: grid;
+    gap: 10px;
+    margin-top: auto;
+  }
+
+  .service-actions.split {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .service-actions .endpoint {
+    grid-column: 1 / -1;
+  }
+
+  .endpoint {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 38px;
+    align-items: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 0 4px 0 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #f8fafc;
+    font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+    font-size: 12px;
+  }
+
+  .endpoint code {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .copy-btn {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    color: var(--muted);
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .copy-btn:hover {
+    color: var(--ink);
+    border-color: var(--line);
+    background: #fff;
+  }
+
+  .copy-btn svg { width: 17px; height: 17px; }
+
+  .copy-btn.done {
+    color: #fff;
+    background: var(--green);
+  }
+
+  .footer {
+    border-top: 1px solid var(--line);
+    padding: 22px 0 28px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .footer .shell {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .footer a {
+    color: var(--ink);
+    font-weight: 680;
+    text-decoration: none;
+  }
+
+  @media (max-width: 960px) {
+    .hero { grid-template-columns: 1fr; gap: 26px; padding-top: 42px; }
+    .node-panel { max-width: 560px; }
+    .services { grid-template-columns: 1fr; }
+    .service-card { min-height: 0; }
+  }
+
+  @media (max-width: 700px) {
+    .shell { width: min(100% - 28px, 1180px); }
+    .topbar { align-items: flex-start; flex-direction: column; gap: 14px; padding: 18px 0; }
+    .nav { width: 100%; overflow-x: auto; padding-bottom: 2px; }
+    .nav a, .status-pill { flex: 0 0 auto; }
+    h1 { font-size: clamp(34px, 11vw, 46px); }
+    .lead { font-size: 16px; }
+    .hero-actions { display: grid; grid-template-columns: 1fr; }
+    .button { width: 100%; }
+    .metrics { grid-template-columns: 1fr; }
+    .network-map { height: 168px; }
+    .node.rpc { left: 26px; top: 42px; }
+    .node.scan { right: 24px; top: 56px; }
+    .node.faucet { left: 122px; bottom: 20px; }
+    .line-a { left: 56px; top: 68px; width: 200px; }
+    .line-b { left: 70px; top: 120px; width: 166px; }
+    .line-c { left: 148px; top: 38px; width: 92px; }
+    .terminal-row { grid-template-columns: 80px minmax(0, 1fr) 46px; font-size: 11px; }
+    .service-actions.split { grid-template-columns: 1fr; }
+    .section-head { align-items: flex-start; flex-direction: column; gap: 8px; }
+    .footer .shell { align-items: flex-start; flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+  <header class="shell topbar">
+    <a class="brand" href="/" aria-label="XYZ365 首页">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2 4 6.5v9L12 20l8-4.5v-9L12 2Z"/>
+          <path d="m4 6.5 8 4.5 8-4.5"/>
+          <path d="M12 11v9"/>
+        </svg>
+      </span>
+      <span>
+        <span class="brand-name">XYZ365</span>
+        <span class="brand-subtitle">Sepolia 节点服务</span>
+      </span>
+    </a>
+    <nav class="nav" aria-label="服务导航">
+      <span class="status-pill"><span class="status-dot"></span>在线</span>
+      <a href="https://faucet.xyz365.tech/" target="_blank" rel="noopener">Faucet</a>
+      <a href="https://scan.xyz365.tech/" target="_blank" rel="noopener">RPC / Explorer</a>
+    </nav>
+  </header>
+
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <span class="kicker">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 12a8 8 0 1 0 16 0A8 8 0 0 0 4 12Z"/>
+            <path d="M12 8v4l3 2"/>
+          </svg>
+          Sepolia Testnet
+        </span>
+        <h1>多链测试网开发工具集</h1>
+        <p class="lead">本页汇总两类开发服务：<strong>Anvil Sepolia 私有节点（RPC + 区块浏览器）</strong>和<strong>多链测试网综合水龙头</strong>（EVM + Tron 等）。两者相互独立，可按开发场景分别使用。</p>
+        <div class="hero-actions">
+          <a class="button primary" href="https://scan.xyz365.tech/" target="_blank" rel="noopener">
+            打开区块浏览器
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 17 17 7"/><path d="M7 7h10v10"/>
+            </svg>
+          </a>
+          <a class="button secondary" href="https://faucet.xyz365.tech/" target="_blank" rel="noopener">
+            领取测试币
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 2.5S6 9 6 14a6 6 0 0 0 12 0c0-5-6-11.5-6-11.5Z"/>
+            </svg>
+          </a>
+        </div>
+        <div class="metrics" aria-label="服务概览">
+          <div class="metric"><strong>2</strong><span>核心服务模块</span></div>
+          <div class="metric"><strong>11155111</strong><span>Sepolia Chain ID</span></div>
+          <div class="metric"><strong>HTTPS</strong><span>证书与反代已配置</span></div>
+        </div>
+      </div>
+
+      <aside class="node-panel" aria-label="节点状态面板">
+        <div class="panel-head">
+          <div class="panel-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 18h12"/><path d="M8 18V7a4 4 0 0 1 8 0v11"/><path d="M10 10h4"/>
+            </svg>
+            service topology
+          </div>
+          <span class="panel-chip"><span class="status-dot"></span>healthy</span>
+        </div>
+        <div class="panel-body">
+          <div class="network-map" aria-hidden="true">
+            <span class="network-line line-a"></span>
+            <span class="network-line line-b"></span>
+            <span class="network-line line-c"></span>
+            <span class="node rpc">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 10-12h-7l1-8Z"/></svg>
+            </span>
+            <span class="node scan">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            </span>
+            <span class="node faucet">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5S6 9 6 14a6 6 0 0 0 12 0c0-5-6-11.5-6-11.5Z"/></svg>
+            </span>
+          </div>
+          <div class="terminal" aria-label="端点状态">
+            <div class="terminal-row"><span class="terminal-key">rpc</span><span class="terminal-value">anvil.xyz365.tech</span><span class="terminal-ok">200</span></div>
+            <div class="terminal-row"><span class="terminal-key">scan</span><span class="terminal-value">scan.xyz365.tech</span><span class="terminal-ok">200</span></div>
+            <div class="terminal-row"><span class="terminal-key">faucet</span><span class="terminal-value">faucet.xyz365.tech</span><span class="terminal-ok">200</span></div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section aria-labelledby="services-title">
+      <div class="section-head">
+        <h2 id="services-title">服务入口</h2>
+        <p>常用开发流程放在首屏下方，领取测试币、复制 RPC、打开浏览器都可以直接完成。</p>
+      </div>
+
+      <div class="services">
+        <article class="service-card">
+          <div class="service-top">
+            <span class="service-icon" style="color: var(--amber);" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5S6 9 6 14a6 6 0 0 0 12 0c0-5-6-11.5-6-11.5Z"/><path d="M12 20a3 3 0 0 1-3-3"/></svg>
+            </span>
+            <span class="badge">多链</span>
+          </div>
+          <h3>测试网综合水龙头</h3>
+          <p>可领取多条测试链资产：Sepolia：USDT、USDC；Tron Shasta：USDT，并提供第三方水龙头快捷入口。<strong>此服务独立运行，与 Anvil 私有节点互不依赖。</strong></p>
+          <ul class="service-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>Sepolia：USDT、USDC</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>Tron Shasta：USDT</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>第三方水龙头快速入口</li>
+          </ul>
+          <div class="service-actions">
+            <a class="button secondary" href="https://faucet.xyz365.tech/" target="_blank" rel="noopener">打开水龙头</a>
+          </div>
+        </article>
+
+        <article class="service-card">
+          <div class="service-top">
+            <span class="service-icon" style="color: var(--blue);" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 10-12h-7l1-8Z"/></svg>
+            </span>
+            <span class="badge">RPC + Otterscan</span>
+          </div>
+          <h3>Anvil RPC Node + Block Explorer</h3>
+          <p>私有 Sepolia fork 节点，提供独立的 JSON-RPC 接口和配套区块浏览器。本地开发、合约调试专用环境，与公网 Sepolia 隔离。</p>
+          <ul class="service-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>公共 JSON-RPC：anvil.xyz365.tech</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>浏览器入口：scan.xyz365.tech</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m20 6-11 11-5-5"/></svg>Otterscan 内部 RPC 指向 /rpc</li>
+          </ul>
+          <div class="service-actions split">
+            <div class="endpoint">
+              <code>https://anvil.xyz365.tech</code>
+              <button class="copy-btn" onclick="copyEndpoint(this)" aria-label="复制 RPC 地址" title="复制 RPC 地址">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+            </div>
+            <a class="button secondary" href="https://anvil.xyz365.tech/" target="_blank" rel="noopener">查看节点响应</a>
+            <a class="button primary" href="https://scan.xyz365.tech/" target="_blank" rel="noopener">打开浏览器</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell">
+      <span>© 2026 XYZ365 · Nginx reverse proxy</span>
+      <a href="https://scan.xyz365.tech/" target="_blank" rel="noopener">scan.xyz365.tech</a>
+    </div>
+  </footer>
+
+<script>
+  function copyEndpoint(btn) {
+    const url = btn.closest('.endpoint').querySelector('code').textContent;
+    const original = btn.innerHTML;
+    const doneIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m20 6-11 11-5-5"/></svg>';
+    const done = () => { btn.innerHTML = doneIcon; btn.classList.add('done'); };
+    const reset = () => { setTimeout(() => { btn.innerHTML = original; btn.classList.remove('done'); }, 1400); };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(done).catch(fallback).finally(reset);
+    } else {
+      fallback();
+      reset();
+    }
+
+    function fallback() {
+      const ta = document.createElement('textarea');
+      ta.value = url;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); done(); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+  }
+</script>
+</body>
+</html>

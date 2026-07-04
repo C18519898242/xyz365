@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XYZ365 · 节点服务</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml">
+<style>
+  :root {
+    --bg: #0b0e1a;
+    --bg-soft: #131829;
+    --card: rgba(255, 255, 255, 0.04);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --text: #e7ecf5;
+    --text-dim: #9aa3b8;
+    --accent: #7c5cff;
+    --accent-2: #29d4ff;
+    --accent-grad: linear-gradient(135deg, #7c5cff 0%, #29d4ff 100%);
+    --shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                 "Hiragino Sans GB", "Microsoft YaHei", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    background-image:
+      radial-gradient(900px 500px at 12% -8%, rgba(124, 92, 255, 0.22), transparent 60%),
+      radial-gradient(800px 480px at 92% 4%, rgba(41, 212, 255, 0.16), transparent 60%),
+      radial-gradient(700px 600px at 50% 120%, rgba(124, 92, 255, 0.12), transparent 60%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 24px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Header ─────────────────────────────────────────── */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 0;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  .brand .logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--accent-grad);
+    display: grid;
+    place-items: center;
+    box-shadow: 0 8px 24px rgba(124, 92, 255, 0.45);
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-dim);
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    padding: 7px 14px;
+    border-radius: 999px;
+    backdrop-filter: blur(8px);
+  }
+
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #2dd4a7;
+    box-shadow: 0 0 0 4px rgba(45, 212, 167, 0.18);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  /* ── Hero ───────────────────────────────────────────── */
+  .hero {
+    text-align: center;
+    padding: 72px 0 48px;
+  }
+
+  .hero .eyebrow {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent-2);
+    background: rgba(41, 212, 255, 0.08);
+    border: 1px solid rgba(41, 212, 255, 0.2);
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 22px;
+  }
+
+  .hero h1 {
+    font-size: clamp(34px, 6vw, 56px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 18px;
+  }
+
+  .hero h1 .grad {
+    background: var(--accent-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero p {
+    font-size: 18px;
+    color: var(--text-dim);
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  /* ── Cards ──────────────────────────────────────────── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 22px;
+    padding-bottom: 64px;
+  }
+
+  .card {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 32px;
+    backdrop-filter: blur(12px);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    padding: 1px;
+    background: var(--accent-grad);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.55);
+  }
+
+  .card:hover::before { opacity: 0.55; }
+
+  .card .icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 22px;
+    background: rgba(124, 92, 255, 0.12);
+    border: 1px solid rgba(124, 92, 255, 0.25);
+  }
+
+  .card .icon svg { width: 28px; height: 28px; }
+
+  .card h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .card .desc {
+    color: var(--text-dim);
+    font-size: 15px;
+    margin-bottom: 22px;
+    min-height: 48px;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 26px;
+  }
+
+  .tag {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-dim);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--card-border);
+    padding: 5px 11px;
+    border-radius: 8px;
+  }
+
+  /* endpoint box (RPC card) */
+  .endpoint {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-bottom: 22px;
+    font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+    font-size: 13px;
+  }
+
+  .endpoint code {
+    flex: 1;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .copy-btn {
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--card-border);
+    color: var(--text-dim);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+
+  .copy-btn:hover { color: var(--text); background: rgba(255, 255, 255, 0.12); }
+  .copy-btn.done { color: #2dd4a7; border-color: rgba(45, 212, 167, 0.4); }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 13px 20px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    color: #fff;
+    background: var(--accent-grad);
+    box-shadow: 0 10px 28px rgba(124, 92, 255, 0.35);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.08);
+    box-shadow: 0 14px 34px rgba(124, 92, 255, 0.5);
+  }
+
+  .btn svg { width: 18px; height: 18px; }
+
+  /* ── Footer ─────────────────────────────────────────── */
+  footer {
+    border-top: 1px solid var(--card-border);
+    padding: 24px 0;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+
+  footer a { color: var(--text-dim); text-decoration: none; }
+  footer a:hover { color: var(--accent-2); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <span class="logo">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2L3 7v10l9 5 9-5V7l-9-5zm0 2.3l6.5 3.6L12 11.5 5.5 7.9 12 4.3zM5 9.6l6 3.3v6.8l-6-3.3V9.6zm14 0v6.8l-6 3.3v-6.8l6-3.3z" fill="#fff"/>
+          </svg>
+        </span>
+        XYZ365
+      </div>
+      <div class="status">
+        <span class="dot"></span>
+        所有服务运行中
+      </div>
+    </header>
+
+    <section class="hero">
+      <span class="eyebrow">Sepolia Testnet</span>
+      <h1>区块链节点 <span class="grad">转发服务</span></h1>
+      <p>由 Nginx 反向代理驱动的以太坊 Sepolia 测试网服务集合，提供测试币水龙头与 JSON-RPC 节点接入。</p>
+    </section>
+
+    <section class="grid">
+      <!-- Faucet -->
+      <article class="card">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#29d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2.5C12 2.5 6 9 6 14a6 6 0 0 0 12 0c0-5-6-11.5-6-11.5z"/>
+            <path d="M12 20a3 3 0 0 1-3-3c0-1.5 1.5-3 3-5"/>
+          </svg>
+        </div>
+        <h2>Sepolia Faucet</h2>
+        <p class="desc">测试网水龙头，输入钱包地址即可领取 Sepolia 测试 ETH，用于合约部署与开发调试。</p>
+        <div class="tags">
+          <span class="tag">Sepolia</span>
+          <span class="tag">Test ETH</span>
+          <span class="tag">Web UI</span>
+        </div>
+        <a class="btn" href="/faucet/">
+          打开水龙头
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M13 6l6 6-6 6"/>
+          </svg>
+        </a>
+      </article>
+
+      <!-- Anvil RPC -->
+      <article class="card">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#7c5cff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/>
+          </svg>
+        </div>
+        <h2>Anvil RPC Node</h2>
+        <p class="desc">基于 Anvil 分叉 Sepolia 的本地以太坊节点，提供标准 JSON-RPC 接口，支持 HTTP 与 WebSocket。</p>
+        <div class="tags">
+          <span class="tag">JSON-RPC</span>
+          <span class="tag">HTTP / WS</span>
+          <span class="tag">Forked</span>
+        </div>
+        <div class="endpoint">
+          <code id="rpc-url">https://www.xyz365.tech/anvil-sepolia</code>
+          <button class="copy-btn" onclick="copyRpc()" id="copy-btn">复制</button>
+        </div>
+        <a class="btn" href="/anvil-sepolia/" target="_blank" rel="noopener">
+          查看节点
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <path d="M15 3h6v6M10 14L21 3"/>
+          </svg>
+        </a>
+      </article>
+
+      <!-- Otterscan Block Explorer -->
+      <article class="card">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#2dd4a7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7"/>
+            <path d="M21 21l-4.3-4.3"/>
+          </svg>
+        </div>
+        <h2>Block Explorer</h2>
+        <p class="desc">基于 Otterscan 的区块浏览器，可查询 Anvil 节点上的区块、交易、合约与地址详情。</p>
+        <div class="tags">
+          <span class="tag">Otterscan</span>
+          <span class="tag">Explorer</span>
+          <span class="tag">Anvil</span>
+        </div>
+        <a class="btn" href="https://scan.xyz365.tech/" target="_blank" rel="noopener">
+          打开浏览器
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <path d="M15 3h6v6M10 14L21 3"/>
+          </svg>
+        </a>
+      </article>
+    </section>
+  </div>
+
+  <footer>
+    <div class="wrap">
+      © 2026 XYZ365 · 由 <a href="https://nginx.org/" target="_blank" rel="noopener">Nginx</a> 提供反向代理
+    </div>
+  </footer>
+
+<script>
+  function copyRpc() {
+    const url = document.getElementById('rpc-url').textContent;
+    const btn = document.getElementById('copy-btn');
+    const done = () => { btn.textContent = '已复制 ✓'; btn.classList.add('done'); };
+    const reset = () => { setTimeout(() => { btn.textContent = '复制'; btn.classList.remove('done'); }, 1600); };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(done).catch(fallback).finally(reset);
+    } else {
+      fallback();
+      reset();
+    }
+
+    function fallback() {
+      const ta = document.createElement('textarea');
+      ta.value = url;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); done(); } catch (e) {}
+      document.body.removeChild(ta);
+    }
+  }
+</script>
+</body>
+</html>
