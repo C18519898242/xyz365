@@ -220,13 +220,11 @@
   .explorer-card {
     display: grid;
     gap: 14px;
-    min-height: 160px;
     padding: 20px;
     border: 1px solid var(--line);
     border-radius: 8px;
     background: rgba(255,255,255,0.86);
     box-shadow: 0 10px 28px rgba(21,32,51,0.07);
-    text-decoration: none;
     transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
   }
 
@@ -277,14 +275,62 @@
     font-size: 14px;
   }
 
-  .explorer-url {
+  .explorer-links {
     margin-top: auto;
-    overflow: hidden;
-    color: var(--blue);
-    font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+    display: grid;
+    gap: 8px;
+  }
+
+  .explorer-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: var(--surface);
+    text-decoration: none;
+    transition: border-color 0.16s ease, background 0.16s ease;
+  }
+
+  .explorer-link:hover {
+    border-color: var(--line-strong);
+    background: #fff;
+  }
+
+  .explorer-link:hover .link-url { color: var(--ink); }
+
+  .explorer-link.disabled {
+    opacity: 0.45;
+    cursor: default;
+  }
+
+  .link-tag {
+    flex: 0 0 auto;
     font-size: 12px;
+    font-weight: 720;
+    padding: 2px 8px;
+    border-radius: 5px;
+    white-space: nowrap;
+  }
+
+  .explorer-link.mainnet .link-tag {
+    background: rgba(33, 103, 243, 0.1);
+    color: var(--blue);
+  }
+
+  .explorer-link.testnet .link-tag {
+    background: rgba(188, 113, 17, 0.1);
+    color: var(--amber);
+  }
+
+  .link-url {
+    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    color: var(--muted);
+    font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+    font-size: 12px;
   }
 
   .footer {
@@ -356,23 +402,23 @@
       <div>
         <span class="kicker">Explorer Directory</span>
         <h1>常用区块链浏览器入口</h1>
-        <p class="lead">把开发时最常查的公网浏览器集中到一个页面，按链分类，避免首页入口过载。</p>
+        <p class="lead">把开发时最常查的公网浏览器集中到一个页面，每条链同时提供主网与测试网入口，按链分类，避免首页入口过载。</p>
       </div>
 
       <aside class="summary-panel" aria-label="浏览器目录概览">
-        <div class="summary-row"><span>收录入口</span><strong>12</strong></div>
+        <div class="summary-row"><span>收录链数</span><strong>12</strong></div>
         <div class="summary-row"><span>覆盖类型</span><strong>EVM / BTC / Solana / Tron</strong></div>
-        <div class="summary-row"><span>本站浏览器</span><strong>scan.xyz365.tech</strong></div>
+        <div class="summary-row"><span>每链入口</span><strong>主网 + 测试网</strong></div>
       </aside>
     </section>
 
     <section class="section" aria-labelledby="xyz-title">
       <div class="section-head">
         <h2 id="xyz-title">XYZ365 服务</h2>
-        <p>项目自己的私有 Sepolia fork 浏览器，仍然是首页的主入口。</p>
+        <p>项目自己的私有 Sepolia fork 浏览器，同时列出公网 Sepolia 方便交叉比对。</p>
       </div>
       <div class="explorer-grid">
-        <a class="explorer-card" href="https://scan.xyz365.tech/" target="_blank" rel="noopener">
+        <div class="explorer-card">
           <span class="explorer-top">
             <span>
               <span class="explorer-name">XYZ365 Explorer</span>
@@ -381,90 +427,206 @@
             <span class="badge">本站</span>
           </span>
           <p>私有 Sepolia fork 的配套浏览器，用于本地开发、合约调试和交易排查。</p>
-          <span class="explorer-url">https://scan.xyz365.tech/</span>
-        </a>
+          <div class="explorer-links">
+            <a class="explorer-link testnet" href="https://scan.xyz365.tech/" target="_blank" rel="noopener">
+              <span class="link-tag">本站 Fork</span>
+              <span class="link-url">scan.xyz365.tech</span>
+            </a>
+            <a class="explorer-link mainnet" href="https://sepolia.etherscan.io/" target="_blank" rel="noopener">
+              <span class="link-tag">公网 Sepolia</span>
+              <span class="link-url">sepolia.etherscan.io</span>
+            </a>
+          </div>
+        </div>
       </div>
     </section>
 
     <section class="section" aria-labelledby="evm-title">
       <div class="section-head">
         <h2 id="evm-title">EVM 主网与 L2</h2>
-        <p>常见 EVM 网络浏览器，适合查交易、合约、地址资产和事件日志。</p>
+        <p>常见 EVM 网络浏览器，每条链同时列出主网与 Sepolia 测试网入口。</p>
       </div>
       <div class="explorer-grid">
-        <a class="explorer-card" href="https://etherscan.io/" target="_blank" rel="noopener">
+        <div class="explorer-card">
           <span class="explorer-top"><span><span class="explorer-name">Etherscan</span><span class="explorer-chain">Ethereum</span></span><span class="badge">EVM</span></span>
-          <p>Ethereum 主网最常用浏览器，合约验证、日志检索和地址追踪都很完整。</p>
-          <span class="explorer-url">https://etherscan.io/</span>
-        </a>
-        <a class="explorer-card" href="https://arbiscan.io/" target="_blank" rel="noopener">
+          <p>Ethereum 最常用浏览器，合约验证、日志检索和地址追踪都很完整。</p>
+          <div class="explorer-links">
+            <a class="explorer-link mainnet" href="https://etherscan.io/" target="_blank" rel="noopener">
+              <span class="link-tag">主网</span>
+              <span class="link-url">etherscan.io</span>
+            </a>
+            <a class="explorer-link testnet" href="https://sepolia.etherscan.io/" target="_blank" rel="noopener">
+              <span class="link-tag">测试网</span>
+              <span class="link-url">sepolia.etherscan.io</span>
+            </a>
+          </div>
+        </div>
+        <div class="explorer-card">
           <span class="explorer-top"><span><span class="explorer-name">Arbiscan</span><span class="explorer-chain">Arbitrum One</span></span><span class="badge">L2</span></span>
           <p>Arbitrum 网络浏览器，适合查看 L2 交易、合约状态与跨链活动。</p>
-          <span class="explorer-url">https://arbiscan.io/</span>
-        </a>
-        <a class="explorer-card" href="https://basescan.org/" target="_blank" rel="noopener">
+          <div class="explorer-links">
+            <a class="explorer-link mainnet" href="https://arbiscan.io/" target="_blank" rel="noopener">
+              <span class="link-tag">主网</span>
+              <span class="link-url">arbiscan.io</span>
+            </a>
+            <a class="explorer-link testnet" href="https://sepolia.arbiscan.io/" target="_blank" rel="noopener">
+              <span class="link-tag">测试网</span>
+              <span class="link-url">sepolia.arbiscan.io</span>
+            </a>
+          </div>
+        </div>
+        <div class="explorer-card">
           <span class="explorer-top"><span><span class="explorer-name">BaseScan</span><span class="explorer-chain">Base</span></span><span class="badge">L2</span></span>
           <p>Base 网络浏览器，查询地址、交易、合约和链上应用活动。</p>
-          <span class="explorer-url">https://basescan.org/</span>
-        </a>
-        <a class="explorer-card" href="https://bscscan.com/" target="_blank" rel="noopener">
+          <div class="explorer-links">
+            <a class="explorer-link mainnet" href="https://basescan.org/" target="_blank" rel="noopener">
+              <span class="link-tag">主网</span>
+              <span class="link-url">basescan.org</span>
+            </a>
+            <a class="explorer-link testnet" href="https://sepolia.basescan.org/" target="_blank" rel="noopener">
+              <span class="link-tag">测试网</span>
+              <span class="link-url">sepolia.basescan.org</span>
+            </a>
+          </div>
+        </div>
+        <div class="explorer-card">
           <span class="explorer-top"><span><span class="explorer-name">BscScan</span><span class="explorer-chain">BNB Chain</span></span><span class="badge">EVM</span></span>
           <p>BNB Chain 浏览器，常用于 BEP-20 资产、交易和合约查询。</p>
-          <span class="explorer-url">https://bscscan.com/</span>
-        </a>
-        <a class="explorer-card" href="https://optimistic.etherscan.io/" target="_blank" rel="noopener">
+          <div class="explorer-links">
+            <a class="explorer-link mainnet" href="https://bscscan.com/" target="_blank" rel="noopener">
+              <span class="link-tag">主网</span>
+              <span class="link-url">bscscan.com</span>
+            </a>
+            <a class="explorer-link testnet" href="https://testnet.bscscan.com/" target="_blank" rel="noopener">
+              <span class="link-tag">测试网</span>
+              <span class="link-url">testnet.bscscan.com</span>
+            </a>
+          </div>
+        </div>
+        <div class="explorer-card">
           <span class="explorer-top"><span><span class="explorer-name">OP Mainnet Explorer</span><span class="explorer-chain">Optimism</span></span><span class="badge">L2</span></span>
           <p>Optimism 的 Etherscan 系浏览器，适合排查 OP Mainnet 上的交易与合约。</p>
-          <span class="explorer-url">https://optimistic.etherscan.io/</span>
-        </a>
-        <a class="explorer-card" href="https://plasmascan.to/" target="_blank" rel="noopener">
+          <div class="explorer-links">
+            <a class="explorer-link mainnet" href="https://optimistic.etherscan.io/" target="_blank" rel="noopener">
+              <span class="link-tag">主网</span>
+              <span class="link-url">optimistic.etherscan.io</span>
+            </a>
+            <a class="explorer-link testnet" href="https://sepolia-optimistic.etherscan.io/" target="_blank" rel="noopener">
+              <span class="link-tag">测试网</span>
+              <span class="link-url">sepolia-optimistic.etherscan.io</span>
+            </a>
+          </div>
+        </div>
+        <div class="explorer-card">
           <span class="explorer-top"><span><span class="explorer-name">PlasmaScan</span><span class="explorer-chain">Plasma Chain</span></span><span class="badge">XPL</span></span>
           <p>Plasma Chain 浏览器，作为新链入口单独保留，方便后续测试与观察。</p>
-          <span class="explorer-url">https://plasmascan.to/</span>
-        </a>
+          <div class="explorer-links">
+            <a class="explorer-link mainnet" href="https://plasmascan.to/" target="_blank" rel="noopener">
+              <span class="link-tag">主网</span>
+              <span class="link-url">plasmascan.to</span>
+            </a>
+            <a class="explorer-link testnet" href="https://testnet.plasmascan.to/" target="_blank" rel="noopener">
+              <span class="link-tag">测试网</span>
+              <span class="link-url">testnet.plasmascan.to</span>
+            </a>
+          </div>
+        </div>
       </div>
     </section>
 
     <section class="section" aria-labelledby="bitcoin-title">
       <div class="section-head">
         <h2 id="bitcoin-title">Bitcoin</h2>
-        <p>Bitcoin 网络浏览器，适合查 UTXO、交易确认、手续费和区块状态。</p>
+        <p>Bitcoin 网络浏览器，每条链同时列出主网与测试网入口，适合查 UTXO、交易确认、手续费和区块状态。</p>
       </div>
       <div class="explorer-grid">
-        <a class="explorer-card" href="https://mempool.space/zh/" target="_blank" rel="noopener">
+        <div class="explorer-card">
           <span class="explorer-top"><span><span class="explorer-name">mempool.space</span><span class="explorer-chain">Bitcoin</span></span><span class="badge">BTC</span></span>
           <p>常用 Bitcoin 浏览器，手续费、区块和 mempool 状态展示清楚。</p>
-          <span class="explorer-url">https://mempool.space/zh/</span>
-        </a>
-        <a class="explorer-card" href="https://blockstream.info/" target="_blank" rel="noopener">
+          <div class="explorer-links">
+            <a class="explorer-link mainnet" href="https://mempool.space/zh/" target="_blank" rel="noopener">
+              <span class="link-tag">主网</span>
+              <span class="link-url">mempool.space/zh</span>
+            </a>
+            <a class="explorer-link testnet" href="https://mempool.space/testnet/zh/" target="_blank" rel="noopener">
+              <span class="link-tag">测试网</span>
+              <span class="link-url">mempool.space/testnet</span>
+            </a>
+          </div>
+        </div>
+        <div class="explorer-card">
           <span class="explorer-top"><span><span class="explorer-name">Blockstream Explorer</span><span class="explorer-chain">Bitcoin</span></span><span class="badge">BTC</span></span>
           <p>Blockstream 提供的 Bitcoin 浏览器，适合查交易、地址和区块详情。</p>
-          <span class="explorer-url">https://blockstream.info/</span>
-        </a>
-        <a class="explorer-card" href="https://www.blockchain.com/explorer" target="_blank" rel="noopener">
+          <div class="explorer-links">
+            <a class="explorer-link mainnet" href="https://blockstream.info/" target="_blank" rel="noopener">
+              <span class="link-tag">主网</span>
+              <span class="link-url">blockstream.info</span>
+            </a>
+            <a class="explorer-link testnet" href="https://blockstream.info/testnet/" target="_blank" rel="noopener">
+              <span class="link-tag">测试网</span>
+              <span class="link-url">blockstream.info/testnet</span>
+            </a>
+          </div>
+        </div>
+        <div class="explorer-card">
           <span class="explorer-top"><span><span class="explorer-name">Blockchain.com Explorer</span><span class="explorer-chain">Bitcoin</span></span><span class="badge">BTC</span></span>
           <p>老牌通用浏览器入口，可作为 Bitcoin 交易与地址查询的备用选择。</p>
-          <span class="explorer-url">https://www.blockchain.com/explorer</span>
-        </a>
+          <div class="explorer-links">
+            <a class="explorer-link mainnet" href="https://www.blockchain.com/explorer" target="_blank" rel="noopener">
+              <span class="link-tag">主网</span>
+              <span class="link-url">blockchain.com/explorer</span>
+            </a>
+            <span class="explorer-link testnet disabled">
+              <span class="link-tag">测试网</span>
+              <span class="link-url">暂无</span>
+            </span>
+          </div>
+        </div>
       </div>
     </section>
 
     <section class="section" aria-labelledby="other-title">
       <div class="section-head">
         <h2 id="other-title">Solana 与 Tron</h2>
-        <p>非 EVM 网络入口，保留常用主网与测试网查询地址。</p>
+        <p>非 EVM 网络入口，每条链同时列出主网与测试网查询地址。</p>
       </div>
       <div class="explorer-grid">
-        <a class="explorer-card" href="https://solscan.io/" target="_blank" rel="noopener">
+        <div class="explorer-card">
           <span class="explorer-top"><span><span class="explorer-name">Solscan</span><span class="explorer-chain">Solana</span></span><span class="badge">SOL</span></span>
           <p>Solana 常用浏览器，适合查交易、账户、Token 和程序交互。</p>
-          <span class="explorer-url">https://solscan.io/</span>
-        </a>
-        <a class="explorer-card" href="https://shasta.tronscan.org/#/address/TGxq4KSjLJiuyn2ohYGkCJ9yLhGGcPJ6QL" target="_blank" rel="noopener">
-          <span class="explorer-top"><span><span class="explorer-name">TRONSCAN Shasta</span><span class="explorer-chain">Tron Testnet</span></span><span class="badge">TRX</span></span>
-          <p>Tron Shasta 测试网地址入口，配合水龙头服务查询测试资产。</p>
-          <span class="explorer-url">https://shasta.tronscan.org/</span>
-        </a>
+          <div class="explorer-links">
+            <a class="explorer-link mainnet" href="https://solscan.io/" target="_blank" rel="noopener">
+              <span class="link-tag">主网</span>
+              <span class="link-url">solscan.io</span>
+            </a>
+            <a class="explorer-link testnet" href="https://solscan.io/?cluster=testnet" target="_blank" rel="noopener">
+              <span class="link-tag">测试网</span>
+              <span class="link-url">solscan.io/?cluster=testnet</span>
+            </a>
+            <a class="explorer-link testnet" href="https://solscan.io/?cluster=devnet" target="_blank" rel="noopener">
+              <span class="link-tag">Devnet</span>
+              <span class="link-url">solscan.io/?cluster=devnet</span>
+            </a>
+          </div>
+        </div>
+        <div class="explorer-card">
+          <span class="explorer-top"><span><span class="explorer-name">TRONSCAN</span><span class="explorer-chain">Tron</span></span><span class="badge">TRX</span></span>
+          <p>Tron 区块浏览器，主网查看交易与合约，Shasta 测试网配合水龙头服务查询测试资产。</p>
+          <div class="explorer-links">
+            <a class="explorer-link mainnet" href="https://tronscan.org/" target="_blank" rel="noopener">
+              <span class="link-tag">主网</span>
+              <span class="link-url">tronscan.org</span>
+            </a>
+            <a class="explorer-link testnet" href="https://shasta.tronscan.org/" target="_blank" rel="noopener">
+              <span class="link-tag">Shasta</span>
+              <span class="link-url">shasta.tronscan.org</span>
+            </a>
+            <a class="explorer-link testnet" href="https://nile.tronscan.org/" target="_blank" rel="noopener">
+              <span class="link-tag">Nile</span>
+              <span class="link-url">nile.tronscan.org</span>
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   </main>
